@@ -1,0 +1,28 @@
+version: "1"
+services:
+  client_pg:
+    container_name: client_pg
+    restart: always
+    build: ./client
+    ports:
+      - 3000:3000
+    links: 
+      - appserv_pg
+  appserv_pg:
+    container_name: appserv_pg
+    restart: always
+    build: ./app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo_pg
+  mongo_pg:
+    container_name: mongo_pg
+    image: mongo
+    restart: always
+    expose:
+      - 27017
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
